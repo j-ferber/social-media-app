@@ -43,7 +43,7 @@ const page = () => {
       <div className="grid w-full gap-4 sm:grid-cols-2 grid-cols-1">
         {
           data.map((user) => (
-            <Card>
+            <Card key={user.id}>
               <CardHeader className="space-y-4">
                 <Avatar>
                   <AvatarImage src={user.image ? user.image : "/avatar.png"} />
