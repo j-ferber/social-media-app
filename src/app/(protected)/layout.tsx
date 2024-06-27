@@ -1,6 +1,7 @@
 import { getServerAuthSession } from "~/server/auth";
 import { redirect } from "next/navigation";
 import { api } from "~/trpc/server";
+import { Toaster } from "~/components/ui/toaster";
 
 export const metadata = {
   title: "Create T3 App",
@@ -22,6 +23,7 @@ export default async function RootLayout({
   return (
     <main className="flex min-h-screen w-full flex-col bg-darkPurple items-center justify-center">
       {children}
+      <Toaster />
     </main>
   );
 }

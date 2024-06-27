@@ -38,7 +38,7 @@ const SearchSheet = () => {
       <SheetTrigger asChild>
         <Button variant="ghost" className="text-white text-lg"><Search /><span className="font-semibold ml-3">Search</span></Button>
       </SheetTrigger>
-      <SheetContent className="flex flex-col gap-3">
+      <SheetContent className="flex flex-col gap-3" side={"left"}>
         <SheetHeader>
           <SheetTitle>Search Usernames</SheetTitle>
         </SheetHeader>
@@ -60,7 +60,7 @@ const SearchSheet = () => {
               )}
             />
             <SheetFooter>
-              <SheetClose>
+              <SheetClose asChild>
                 <Button type="submit" variant={"secondary"}>Search</Button>
               </SheetClose>
             </SheetFooter>

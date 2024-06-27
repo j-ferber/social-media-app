@@ -4,8 +4,11 @@ import ResponsiveContainer from '~/components/ResponsiveContainer'
 import { buttonVariants } from '~/components/ui/button'
 import { Github } from 'lucide-react'
 import { Card, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
+import { getServerAuthSession } from '~/server/auth'
 
-const About = () => {
+const About = async () => {
+
+  const session = await getServerAuthSession()
 
   const techStack = [
     {
@@ -45,7 +48,7 @@ const About = () => {
           A responsive full-stack social media web app.
         </h1>
         <div className='w-full items-center justify-center flex gap-2 mb-6'>
-          <Link className={buttonVariants({variant: 'default'})} href={"/login"}>
+          <Link className={buttonVariants({variant: 'default'})} href={session ? "/upload" : "/api/auth/signin"}>
             Get Started
           </Link>
           <Link className={buttonVariants({variant: 'secondary'})} href={"https://github.com/j-ferber"} target='_blank'>
