@@ -35,12 +35,13 @@ const ProfilePage = async ({params}: {params: {username: string}}) => {
               userData.username !== viewedUser.username ? (
                 <ClientFollowButton username={viewedUser.username} following={following} />
               ) : (
-                <Link className={buttonVariants({variant: "secondary"})} href={"/"}>Edit Profile</Link>
+                <Link className={buttonVariants({variant: "secondary"})} href={"/accounts/edit"}>Edit Profile</Link>
               )
             }
           </div>
         </header>
-        <Separator className='mt-10'/>
+        <p className='sm:text-xl text-sm mt-6 text-center sm:text-left'>{viewedUser.bio}</p>
+        <Separator className='mt-4'/>
       </div>
     </ResponsiveContainer>
   )

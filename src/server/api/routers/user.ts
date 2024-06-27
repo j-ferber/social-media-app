@@ -41,9 +41,9 @@ export const userRouter = createTRPCRouter({
   }),
 
   getUserData: publicProcedure
-  .query(({ctx}) => {
+  .query(async ({ctx}) => {
     if (!ctx.session) return null
-    return ctx.db.user.findUnique({
+    return await ctx.db.user.findUnique({
       where: {
         id: ctx.session.user.id
       }, 
@@ -147,5 +147,41 @@ export const userRouter = createTRPCRouter({
       })
     }
     return matchingUsers
+  }),
+
+  editUserProfile: protectedProcedure
+  .input(z.object({username: z.string().optional(), bio: z.string().optional()}))
+  .mutation(async ({ctx, input}) => {
+    const currentUser = await ctx.db.user.findUnique({
+      where: {
+        id: ctx.session.user.id
+      }
+    })
+    if (!currentUser) {
+      throw new TRPCError({
+        code: "NOT_FOUND",
+        message: "No user found. You need to be signed in."
+      })
+    }
+    const existingUser = await ctx.db.user.findUnique({
+      where: {
+        username: input.username
+      }
+    })
+    if (existingUser && existingUser.id !== currentUser.id) {
+      throw new TRPCError({
+        code: "CONFLICT",
+        message: "This username is already taken."
+      })
+    }
+    return ctx.db.user.update({
+      where: {
+        id: ctx.session.user.id
+      },
+      data: {
+        username: input.username,
+        bio: input.bio
+      }
+    })
   })
 })
