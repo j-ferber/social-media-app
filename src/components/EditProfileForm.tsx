@@ -9,6 +9,7 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo } from "react";
+import { toast } from "./ui/use-toast";
 
 export const EditProfileFormSchema = z.object({
   username: z
@@ -23,7 +24,15 @@ export const ProfileForm = () => {
 
   const router = useRouter()
   const {data} = api.user.getUserData.useQuery()
-  const {mutate} = api.user.editUserProfile.useMutation()
+  const {mutate} = api.user.editUserProfile.useMutation({
+    onError: (error) => {
+      toast({
+        title: "Input Error",
+        description: error.message,
+        variant: "destructive"
+      })
+    }
+  })
 
   const defaultValues = useMemo(
     () => ({

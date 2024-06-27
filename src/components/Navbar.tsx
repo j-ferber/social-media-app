@@ -24,25 +24,27 @@ const Navbar = async () => {
       {
         session?.user ? (
           <div className='w-full flex gap-2 flex-col'>
-            <Card className='flex items-center justify-between p-2 gap-2'>
-              {
-                session.user.image ? (
-                  <Avatar>
-                    <AvatarImage src={session.user.image} />
-                    <AvatarFallback>{session.user.username?.charAt(0).toUpperCase()}</AvatarFallback>
-                  </Avatar>
-                ) : (
-                  <Avatar>
-                    <AvatarImage src='../images/avatar.png' />
-                  </Avatar>
-                )
-              }
-              <div className='flex-1'>
-                <CardHeader className='p-0 truncate text-sm text-center'>
-                  {userData?.username ? userData.username : session.user.name}
-                </CardHeader>
-              </div>
-            </Card>
+            <Link href={userData?.username ? `/${userData.username}` : "/setup"}>
+              <Card className='flex items-center justify-between p-2 gap-2'>
+                {
+                  session.user.image ? (
+                    <Avatar>
+                      <AvatarImage src={session.user.image} />
+                      <AvatarFallback>{session.user.username?.charAt(0).toUpperCase()}</AvatarFallback>
+                    </Avatar>
+                  ) : (
+                    <Avatar>
+                      <AvatarImage src='../images/avatar.png' />
+                    </Avatar>
+                  )
+                }
+                <div className='flex-1'>
+                  <CardHeader className='p-0 truncate text-sm text-center'>
+                    {userData?.username ? userData.username : session.user.name}
+                  </CardHeader>
+                </div>
+              </Card>
+            </Link>
             <div className='flex gap-2 justify-center items-center w-full'>
               <Link className={cn(buttonVariants({variant: "secondary"}), "flex-1 flex")} href={"/api/auth/signout"}>
                 Sign Out
