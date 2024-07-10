@@ -16,13 +16,23 @@ datasource db {
 
 model Post {
     id        Int      @id @default(autoincrement())
-    name      String
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
     createdBy   User   @relation(fields: [createdById], references: [id])
     createdById String
     likes      Likes[]
     comment    Comment[]
+    media      Media  @relation(fields: [mediaId], references: [id])
+    mediaId    Int    @unique
+    caption    String
+}
+
+model Media {
+    id        Int     @id @default(autoincrement())
+    url       String  @unique
+    createdBy   User  @relation(fields: [createdById], references: [id])
+    createdById String
+    post Post?
 }
 
 // Necessary for Next auth
@@ -69,6 +79,7 @@ model User {
     likes         Likes[]
     comments      Comment[]
     commentLikes  CommentLikes[]
+    media         Media[]
 }
 
 model VerificationToken {
