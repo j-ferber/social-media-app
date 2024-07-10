@@ -1,17 +1,14 @@
-import React from 'react'
-import { api } from '~/trpc/server'
-import { redirect } from 'next/navigation'
-import SetupForm from '~/components/SetupForm'
+import React from 'react';
+import {api} from '~/trpc/server';
+import {redirect} from 'next/navigation';
+import SetupForm from '~/components/SetupForm';
 
 const Setup = async () => {
+  const userData = await api.user.getUserData();
+  if (!userData) return redirect('/api/auth/signin');
+  if (userData?.username) return redirect(`/${userData.username}`);
 
-  const userData = await api.user.getUserData()
-  if (!userData) return redirect('/api/auth/signin')
-  if (userData?.username) return redirect(`/${userData.username}`)
+  return <SetupForm />;
+};
 
-  return (
-    <SetupForm />
-  )
-}
-
-export default Setup
+export default Setup;

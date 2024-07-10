@@ -1,13 +1,15 @@
-import React from 'react'
-import { LoaderCircle } from 'lucide-react'
+import React from 'react';
+import {LoaderCircle} from 'lucide-react';
 
 const Loading = () => {
   return (
-    <div className='bg-darkPurple w-full min-h-screen flex justify-center items-center flex-col'>
-      <h1 className='md:text-3xl text-xl text-white font-bold mb-2'>Loading...</h1>
-      <LoaderCircle className='animate-spin text-white'/>
+    <div className="flex min-h-screen w-full flex-col items-center justify-center bg-darkPurple">
+      <h1 className="mb-2 text-xl font-bold text-white md:text-3xl">
+        Loading...
+      </h1>
+      <LoaderCircle className="animate-spin text-white" />
     </div>
-  )
-}
+  );
+};
 
-export default Loading
+export default Loading;
