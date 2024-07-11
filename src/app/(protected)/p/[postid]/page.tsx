@@ -7,8 +7,9 @@ import ResponsiveContainer from '~/components/ResponsiveContainer';
 import {Home, LoaderCircle} from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
-import {MessageCircle, ThumbsUp} from 'lucide-react';
+import {ThumbsUp} from 'lucide-react';
 import {cn} from '~/lib/utils';
+import CommentSheet from '~/components/CommentSheet';
 
 const PostPage = () => {
   const params: {postid: string} = useParams();
@@ -55,7 +56,7 @@ const PostPage = () => {
         <div className="flex w-full items-center gap-2">
           <ThumbsUp
             className={cn(
-              'transition-all hover:scale-110 hover:cursor-pointer active:scale-105',
+              'text-white transition-all hover:scale-110 hover:cursor-pointer active:scale-105',
               data.userLiked && 'text-blue-500'
             )}
             onClick={() => mutate({postId: parseInt(params.postid)})}
@@ -63,7 +64,7 @@ const PostPage = () => {
           <p className="w-5 text-center text-xl font-bold leading-none text-white">
             {data.likes.length}
           </p>
-          <MessageCircle className="hover:cursor-pointer" />
+          <CommentSheet />
         </div>
         <div className="flex w-full items-center gap-4 text-pretty text-white">
           <img
