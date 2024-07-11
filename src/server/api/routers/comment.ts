@@ -49,6 +49,7 @@ export const commentRouter = createTRPCRouter({
         isLikedByCurrentUser: comment.commentLikes.some(
           like => like.userId === ctx.session.user.id
         ),
+        createdByCurrentUser: comment.userId === ctx.session.user.id,
       }));
     }),
 
@@ -86,5 +87,32 @@ export const commentRouter = createTRPCRouter({
           },
         });
       }
+    }),
+
+  deleteComment: protectedProcedure
+    .input(z.object({commentId: z.number()}))
+    .mutation(async ({ctx, input}) => {
+      const existingComment = await ctx.db.comment.findFirst({
+        where: {
+          id: input.commentId,
+        },
+      });
+      if (!existingComment) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Comment not found',
+        });
+      }
+      if (existingComment.userId !== ctx.session.user.id) {
+        throw new TRPCError({
+          code: 'FORBIDDEN',
+          message: 'You do not have permission to delete this comment',
+        });
+      }
+      return await ctx.db.comment.delete({
+        where: {
+          id: input.commentId,
+        },
+      });
     }),
 });
