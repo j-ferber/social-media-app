@@ -58,7 +58,7 @@ const CommentForm = () => {
     },
   });
 
-  const {data, refetch} = api.comment.getPostComments.useQuery({
+  const {data, refetch, isLoading} = api.comment.getPostComments.useQuery({
     postId: params.postid,
   });
 
@@ -100,52 +100,52 @@ const CommentForm = () => {
             Post
           </Button>
         </div>
-        <Suspense
-          fallback={<LoaderCircle className="mx-auto mt-4 animate-spin" />}
-        >
-          {data === undefined ?? !data?.length ? (
-            <p className="font-semibold">No comments yet.</p>
+        {data === undefined ?? !data?.length ? (
+          isLoading ? (
+            <LoaderCircle className="mx-auto mt-4 animate-spin" />
           ) : (
-            data.map(comment => (
-              <div
-                className="flex w-full flex-col items-start justify-center gap-2"
-                key={comment.id}
-              >
-                <div className="flex w-full items-center justify-start gap-2">
-                  {comment.user.image ? (
-                    <Avatar>
-                      <AvatarImage
-                        src={comment.user.image}
-                        alt="Profile Picture"
-                      />
-                    </Avatar>
-                  ) : (
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-darkPurple">
-                      <p>{comment.user.username?.charAt(0).toUpperCase()}</p>
-                    </div>
-                  )}
-                  <p className="font-semibold">{comment.user.username}</p>
-                  <div className="flex w-full items-center justify-end text-muted-foreground">
-                    {comment.createdAt.toLocaleDateString()}
+            <p className="font-semibold">No comments yet.</p>
+          )
+        ) : (
+          data.map(comment => (
+            <div
+              className="flex w-full flex-col items-start justify-center gap-2"
+              key={comment.id}
+            >
+              <div className="flex w-full items-center justify-start gap-2">
+                {comment.user.image ? (
+                  <Avatar>
+                    <AvatarImage
+                      src={comment.user.image}
+                      alt="Profile Picture"
+                    />
+                  </Avatar>
+                ) : (
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-darkPurple">
+                    <p>{comment.user.username?.charAt(0).toUpperCase()}</p>
                   </div>
-                </div>
-                <p className="text-pretty">{comment.comment}</p>
-                <div className="flex w-full items-center justify-start gap-2">
-                  <Heart
-                    className={cn(
-                      'h-4 w-4 transition-all hover:scale-110 hover:cursor-pointer active:scale-105',
-                      comment.isLikedByCurrentUser && 'text-red-500'
-                    )}
-                    onClick={() => likeComment({commentId: comment.id})}
-                  />
-                  <p className="w-full text-sm font-semibold">
-                    {comment.commentLikes.length}
-                  </p>
+                )}
+                <p className="font-semibold">{comment.user.username}</p>
+                <div className="flex w-full items-center justify-end text-muted-foreground">
+                  {comment.createdAt.toLocaleDateString()}
                 </div>
               </div>
-            ))
-          )}
-        </Suspense>
+              <p className="text-pretty">{comment.comment}</p>
+              <div className="flex w-full items-center justify-start gap-2">
+                <Heart
+                  className={cn(
+                    'h-4 w-4 transition-all hover:scale-110 hover:cursor-pointer active:scale-105',
+                    comment.isLikedByCurrentUser && 'text-red-500'
+                  )}
+                  onClick={() => likeComment({commentId: comment.id})}
+                />
+                <p className="w-full text-sm font-semibold">
+                  {comment.commentLikes.length}
+                </p>
+              </div>
+            </div>
+          ))
+        )}
       </form>
     </Form>
   );
