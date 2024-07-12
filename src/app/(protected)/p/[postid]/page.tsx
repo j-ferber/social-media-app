@@ -4,7 +4,7 @@ import React from 'react';
 import {api} from '~/trpc/react';
 import {useParams} from 'next/navigation';
 import ResponsiveContainer from '~/components/ResponsiveContainer';
-import {Home, LoaderCircle} from 'lucide-react';
+import {Home, LoaderCircle, Pencil} from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import {ThumbsUp} from 'lucide-react';
@@ -65,6 +65,13 @@ const PostPage = () => {
             {data.likes.length}
           </p>
           <CommentSheet />
+          {
+            data.createdByCurrentUser && (
+              <Link href={`/p/edit/${params.postid}`}>
+                <Pencil className='text-white transition-all hover:scale-110 hover:cursor-pointer active:scale-105 ml-4' />
+              </Link>
+            )
+          }
         </div>
         <div className="flex w-full items-center gap-4 text-pretty text-white">
           <img

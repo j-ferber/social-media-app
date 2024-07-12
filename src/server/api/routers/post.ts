@@ -120,6 +120,7 @@ export const postRouter = createTRPCRouter({
       return {
         ...post,
         userLiked,
+        createdByCurrentUser: post.createdById === ctx.session.user.id,
       };
     }),
 
@@ -158,4 +159,34 @@ export const postRouter = createTRPCRouter({
         });
       }
     }),
+
+    updatePost: protectedProcedure
+      .input(z.object({postId: z.number(), caption: z.string()}))
+      .mutation(async ({ctx, input}) => {
+        const post = await ctx.db.post.findFirst({
+          where: {
+            id: input.postId
+          }
+        })
+        if (!post) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'Post not found'
+          })
+        }
+        if (post.createdById !== ctx.session.user.id) {
+          throw new TRPCError({
+            code: 'FORBIDDEN',
+            message: 'You do not have permission to update this post'
+          })
+        }
+        return await ctx.db.post.update({
+          where: {
+            id: input.postId
+          }, 
+          data: {
+            caption: input.caption
+          }
+        })
+      })
 });
