@@ -12,9 +12,12 @@ const EditPostPage = async ({params}: {params: {postid: string}}) => {
   if (!session) return redirect('/api/auth/signin')
 
   const postData = await api.post.getPostData({postId: parseInt(params.postid)})
+  const user = await api.user.getUserData()
   
+  console.log(session)
+
   if (postData.createdById !== session?.user.id) {
-    return redirect(`/${session.user.username}`)
+    return redirect(`/${user?.username}`)
   }
 
   return (

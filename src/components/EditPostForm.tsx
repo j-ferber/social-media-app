@@ -1,7 +1,7 @@
 "use client"
 
 import React from 'react'
-import { api, RouterOutputs } from '~/trpc/react'
+import { api, type RouterOutputs } from '~/trpc/react'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormMessage } from './ui/form'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
