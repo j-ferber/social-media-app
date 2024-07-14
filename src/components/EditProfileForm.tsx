@@ -77,7 +77,7 @@ export const ProfileForm = () => {
           name="username"
           render={({field}) => (
             <FormItem>
-              <FormLabel>Username</FormLabel>
+              <FormLabel className="text-lg text-white">Username</FormLabel>
               <FormControl>
                 <Input placeholder="Enter username" {...field} />
               </FormControl>
@@ -91,7 +91,7 @@ export const ProfileForm = () => {
           name="bio"
           render={({field}) => (
             <FormItem>
-              <FormLabel>Bio</FormLabel>
+              <FormLabel className="text-lg text-white">Bio</FormLabel>
               <FormControl>
                 <Input placeholder="Enter bio" {...field} />
               </FormControl>
@@ -102,7 +102,9 @@ export const ProfileForm = () => {
             </FormItem>
           )}
         />
-        <Button type="submit">Save</Button>
+        <Button type="submit" variant={'secondary'}>
+          Save
+        </Button>
       </form>
     </Form>
   );

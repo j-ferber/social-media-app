@@ -136,9 +136,12 @@ const UploadDialog = () => {
   return (
     <Dialog onOpenChange={() => handleCloseMedia()} open={open}>
       <DialogTrigger asChild>
-        <Button variant={'ghost'} className="text-lg text-white">
+        <Button
+          variant={'ghost'}
+          className="flex h-full w-full items-center justify-center gap-3 rounded-xl p-4 font-semibold text-white transition-all duration-150 hover:bg-neutral-500"
+        >
           <SquarePlus />
-          <span className="ml-3 font-semibold">Upload</span>
+          <span className="text-lg text-white">Upload</span>
         </Button>
       </DialogTrigger>
       <DialogContent>

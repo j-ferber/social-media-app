@@ -1,7 +1,7 @@
 'use client';
 
 import {usePathname} from 'next/navigation';
-import {Home, Compass, NotebookText} from 'lucide-react';
+import {Home, Compass} from 'lucide-react';
 import Link from 'next/link';
 import {cn} from '~/lib/utils';
 
@@ -18,11 +18,6 @@ const NavbarLinks = () => {
       name: 'Explore',
       href: '/explore',
       icon: <Compass className="transition-all" />,
-    },
-    {
-      name: 'About',
-      href: '/about',
-      icon: <NotebookText className="transition-all" />,
     },
   ];
 

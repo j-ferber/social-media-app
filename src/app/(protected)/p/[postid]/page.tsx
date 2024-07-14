@@ -4,21 +4,41 @@ import React from 'react';
 import {api} from '~/trpc/react';
 import {useParams} from 'next/navigation';
 import ResponsiveContainer from '~/components/ResponsiveContainer';
-import {Home, LoaderCircle, Pencil} from 'lucide-react';
+import {Home, LoaderCircle, Pencil, Trash} from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import {ThumbsUp} from 'lucide-react';
 import {cn} from '~/lib/utils';
 import CommentSheet from '~/components/CommentSheet';
+import {useToast} from '~/components/ui/use-toast';
+import {useRouter} from 'next/navigation';
 
 const PostPage = () => {
   const params: {postid: string} = useParams();
+  const {toast} = useToast();
+  const router = useRouter();
   const {isLoading, data, refetch} = api.post.getPostData.useQuery({
     postId: parseInt(params.postid),
   });
   const {mutate} = api.post.likePost.useMutation({
     onSuccess: async () => {
       await refetch();
+    },
+  });
+  const {mutate: deletePost} = api.post.deletePost.useMutation({
+    onSuccess: async () => {
+      router.push(`/`);
+      toast({
+        title: 'Post Deleted',
+        description: 'Your post has been deleted successfully',
+      });
+    },
+    onError: error => {
+      toast({
+        title: 'Delete Error',
+        description: error.message,
+        variant: 'destructive',
+      });
     },
   });
 
@@ -53,25 +73,33 @@ const PostPage = () => {
             className="object-cover sm:object-contain"
           />
         </div>
-        <div className="flex w-full items-center gap-2">
-          <ThumbsUp
-            className={cn(
-              'text-white transition-all hover:scale-110 hover:cursor-pointer active:scale-105',
-              data.userLiked && 'text-blue-500'
-            )}
-            onClick={() => mutate({postId: parseInt(params.postid)})}
-          />
-          <p className="w-5 text-center text-xl font-bold leading-none text-white">
-            {data.likes.length}
-          </p>
-          <CommentSheet />
-          {
-            data.createdByCurrentUser && (
+        <div className="flex w-full items-center justify-between">
+          <div className="flex items-center justify-center gap-2">
+            <ThumbsUp
+              className={cn(
+                'text-white transition-all hover:scale-110 hover:cursor-pointer active:scale-105',
+                data.userLiked && 'text-blue-500'
+              )}
+              onClick={() => mutate({postId: parseInt(params.postid)})}
+            />
+            <p className="w-5 text-center text-xl font-bold leading-none text-white">
+              {data.likes.length}
+            </p>
+            <CommentSheet />
+          </div>
+          {data.createdByCurrentUser && (
+            <div className="flex items-center justify-center gap-4">
               <Link href={`/p/edit/${params.postid}`}>
-                <Pencil className='text-white transition-all hover:scale-110 hover:cursor-pointer active:scale-105 ml-4' />
+                <Pencil className="ml-4 text-white transition-all hover:scale-110 hover:cursor-pointer active:scale-105" />
               </Link>
-            )
-          }
+              <Trash
+                className={
+                  'text-white transition-all hover:scale-110 hover:cursor-pointer active:scale-105'
+                }
+                onClick={() => deletePost({postId: params.postid})}
+              />
+            </div>
+          )}
         </div>
         <div className="flex w-full items-center gap-4 text-pretty text-white">
           <img

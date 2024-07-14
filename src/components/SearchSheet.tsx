@@ -56,9 +56,12 @@ const SearchSheet = () => {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="ghost" className="text-lg text-white">
+        <Button
+          variant={'ghost'}
+          className="flex h-full w-full items-center justify-center gap-3 rounded-xl p-4 font-semibold text-white transition-all duration-150 hover:bg-neutral-500"
+        >
           <Search />
-          <span className="ml-3 font-semibold">Search</span>
+          <span className="text-lg font-semibold">Search</span>
         </Button>
       </SheetTrigger>
       <SheetContent className="flex flex-col gap-3" side={'left'}>
