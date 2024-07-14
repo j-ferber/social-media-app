@@ -6,6 +6,7 @@ import {TRPCReactProvider} from '~/trpc/react';
 import Navbar from '~/components/Navbar';
 import {ThemeProvider} from '~/components/theme-provider';
 import {Toaster} from '~/components/ui/toaster';
+import NavbarToggle from '~/components/NavbarToggle';
 
 export const metadata = {
   title: 'Create T3 App',
@@ -31,6 +32,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
           >
             <main className="flex min-h-screen w-full">
               <Navbar />
+              <NavbarToggle />
               <div className="flex flex-1 items-center justify-center bg-darkPurple md:pl-[200px]">
                 {children}
               </div>

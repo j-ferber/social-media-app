@@ -1,7 +1,11 @@
 import {TRPCError} from '@trpc/server';
 import {z} from 'zod';
 
-import {createTRPCRouter, protectedProcedure} from '~/server/api/trpc';
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure,
+} from '~/server/api/trpc';
 
 import {S3Client, DeleteObjectCommand} from '@aws-sdk/client-s3';
 import {revalidatePath} from 'next/cache';
@@ -214,5 +218,36 @@ export const postRouter = createTRPCRouter({
       });
       await s3Client.send(deleteObjectCommand);
       revalidatePath('/explore');
+    }),
+
+  getRecentPosts: publicProcedure
+    .input(
+      z.object({
+        limit: z.number().min(1).max(10).nullish(),
+        cursor: z.number().nullish(),
+      })
+    )
+    .query(async ({ctx, input}) => {
+      const limit = input.limit ?? 10;
+      const items = await ctx.db.post.findMany({
+        take: limit + 1,
+        cursor: input.cursor ? {id: input.cursor} : undefined,
+        orderBy: {
+          createdAt: 'desc',
+        },
+        include: {
+          media: true,
+          createdBy: true,
+        },
+      });
+      let nextCursor: typeof input.cursor | undefined = undefined;
+      if (items.length > limit) {
+        const nextItem = items.pop();
+        nextCursor = nextItem!.id;
+      }
+      return {
+        items,
+        nextCursor,
+      };
     }),
 });
