@@ -34,7 +34,7 @@ const Navbar = async () => {
                 <Avatar>
                   <AvatarImage src={session.user.image} />
                   <AvatarFallback>
-                    {session.user.username?.charAt(0).toUpperCase()}
+                    {userData?.username?.charAt(0).toUpperCase()}
                   </AvatarFallback>
                 </Avatar>
               ) : (

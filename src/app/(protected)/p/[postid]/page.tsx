@@ -20,6 +20,7 @@ const PostPage = () => {
   const {isLoading, data, refetch} = api.post.getPostData.useQuery({
     postId: parseInt(params.postid),
   });
+  const {data: currentUser} = api.user.getUserData.useQuery();
   const {mutate} = api.post.likePost.useMutation({
     onSuccess: async () => {
       await refetch();
@@ -27,7 +28,7 @@ const PostPage = () => {
   });
   const {mutate: deletePost} = api.post.deletePost.useMutation({
     onSuccess: async () => {
-      router.push(`/`);
+      router.push(`/${currentUser?.username}`);
       toast({
         title: 'Post Deleted',
         description: 'Your post has been deleted successfully',

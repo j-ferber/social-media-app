@@ -11,7 +11,7 @@ const ResponsiveContainer = ({
   return (
     <div
       className={cn(
-        'mx-auto h-full w-full max-w-screen-lg px-2.5 md:px-10',
+        'mx-auto h-full w-full max-w-screen-lg md:px-10',
         className
       )}
     >
