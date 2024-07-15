@@ -29,6 +29,7 @@ const PostPage = () => {
   const {mutate: deletePost} = api.post.deletePost.useMutation({
     onSuccess: async () => {
       router.push(`/${currentUser?.username}`);
+      router.refresh()
       toast({
         title: 'Post Deleted',
         description: 'Your post has been deleted successfully',

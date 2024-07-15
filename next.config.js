@@ -12,6 +12,10 @@ const config = {
         protocol: 'https',
         hostname: 'social-media-app-local-justin.s3.us-east-2.amazonaws.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'social-media-app-prod-justin.s3.us-east-2.amazonaws.com',
+      }
     ],
   },
 };

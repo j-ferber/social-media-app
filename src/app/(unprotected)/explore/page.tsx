@@ -14,6 +14,8 @@ const Explore = () => {
       {getNextPageParam: lastPage => lastPage.nextCursor}
     );
 
+  console.log(data)
+
   if (isLoading)
     return (
       <ResponsiveContainer>
@@ -23,10 +25,10 @@ const Explore = () => {
       </ResponsiveContainer>
     );
 
-  if (!data)
+  if (!data || data.pages[0]?.items.length === 0)
     return (
       <ResponsiveContainer>
-        <div className="flex w-full items-center justify-center">
+        <div className="flex w-full items-center justify-center min-h-screen">
           <h1 className="text-2xl font-semibold text-white">No posts found.</h1>
         </div>
       </ResponsiveContainer>
